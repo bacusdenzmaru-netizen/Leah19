@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valentine's Day Proposal 🎀</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Parisienne&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #ff4d6d;
+      --soft-pink: #ffb3c1;
+      --text: #800f2f;
+      --bg: #fff0f3;
+      --letter-pink: rgba(255, 229, 236, 0.95);
+      --font-cursive: 'Parisienne', cursive;
+      --font-script: 'Dancing Script', cursive;
+    }
+
+    body { 
+      margin: 0; font-family: var(--font-cursive); color: var(--text); 
+      overflow: hidden; height: 100vh; width: 100vw;
+      background: linear-gradient(135deg, #ffccd5 0%, #ff758f 100%);
+      position: relative;
+    }
+
+    /* --- FLOATING DESIGN --- */
+    .bg-particle { 
+      position: absolute; z-index: 1; opacity: 0.8; 
+      pointer-events: none; 
+      animation: flow 8s linear forwards, sway 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes flow {
+      0% { bottom: -10%; transform: translateX(0) rotate(0deg); }
+      100% { bottom: 110%; transform: translateX(20px) rotate(360deg); }
+    }
+
+    @keyframes sway {
+      from { margin-left: -20px; }
+      to { margin-left: 20px; }
+    }
+
+    #musicToggle {
+      position: fixed; top: 20px; right: 20px;
+      z-index: 9999; padding: 10px;
+      background: rgba(255, 255, 255, 0.5);
+      border: 2px solid white; border-radius: 50%;
+      cursor: pointer; font-size: 20px;
+    }
+
+    section { 
+      position: absolute; inset: 0; display: none;
+      flex-direction: column; justify-content: center; align-items: center; 
+      text-align: center; padding: 20px; z-index: 10;
+    }
+    section.active { display: flex; }
+
+    .popup { 
+      background: rgba(255, 255, 255, 0.95); border-radius: 40px; 
+      border: 6px solid var(--soft-pink); padding: 30px; 
+      max-width: 90%; width: 450px; position: relative;
+      box-shadow: 0 10px 40px rgba(255, 77, 109, 0.4);
+      min-height: 480px; display: flex; flex-direction: column; justify-content: center;
+    }
+
+    #noOverlap {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: white; border-radius: 34px;
+      display: none; flex-direction: column; justify-content: center; align-items: center;
+      z-index: 500; padding: 20px; box-sizing: border-box;
+    }
+
+    button { 
+      padding: 12px 25px; font-family: var(--font-script); font-size: 22px; 
+      cursor: pointer; border: none; border-radius: 50px; 
+      background: var(--primary); color: white; margin: 10px;
+      transition: transform 0.2s;
+    }
+    button:hover { transform: scale(1.1); }
+
+    .question-img { width: 180px; height: 180px; border-radius: 50%; object-fit: cover; border: 4px solid var(--soft-pink); }
+
+    #shockedCat {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 85vw; max-width: 400px; z-index: 9000; border-radius: 20px;
+      display: none; box-shadow: 0 0 100px rgba(0,0,0,0.6);
+    }
+
+    /* --- CENTERED LETTER & CURSIVE FONT --- */
+    .envelope-wrapper { 
+      position: relative; width: 220px; height: 180px; 
+      margin: 40px auto; cursor: pointer; 
+    }
+    
+    .envelope-back { 
+      position: absolute; width: 100%; height: 100%; 
+      background: url('bear-envelope.png') no-repeat center; 
+      background-size: contain; z-index: 40; 
+    }
+
+    .letter-card { 
+      position: absolute; 
+      top: 50%; left: 50%;
+      transform: translate(-50%, -40%) scale(0.8);
+      width: 280px; height: 350px;
+      background: var(--letter-pink); 
+      border-radius: 15px; padding: 25px; 
+      transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+      opacity: 0; z-index: 10; 
+      border: 2px solid var(--soft-pink);
+      overflow-y: auto; text-align: left; 
+      /* --- UPDATED FONT HERE --- */
+      font-family: 'Dancing Script', cursive; font-size: 19px; line-height: 1.4;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      backdrop-filter: blur(5px);
+      box-sizing: border-box;
+      color: #333;
+    }
+
+    /* Style the scrollbar inside the letter */
+    .letter-card::-webkit-scrollbar { width: 5px; }
+    .letter-card::-webkit-scrollbar-thumb { background: var(--soft-pink); border-radius: 10px; }
+
+    .open .letter-card { 
+      transform: translate(-50%, -90%) scale(1); 
+      opacity: 1; 
+      z-index: 50; 
+    }
+  </style>
+</head>
+<body>
+
+<audio id="bgMusic" loop><source src="music.mp3" type="audio/mpeg"></audio>
+<audio id="openSound"><source src="open.mp3" type="audio/mpeg"></audio>
+<div id="musicToggle" onclick="toggleMusic()">🔇</div>
+
+<img src="shocked.jpg" id="shockedCat">
+
+<section id="landing" class="active">
+  <div class="popup">
+    <h1 style="font-family: var(--font-script); color: var(--primary);">Happy Valentine's Day My Leyley! 🥰</h1>
+    <video style="width:100%; border-radius:15px;" autoplay loop muted playsinline><source src="hi.mp4"></video>
+    <button onclick="goTo('question')">Open My Heart ➡️</button>
+  </div>
+</section>
+
+<section id="question">
+  <div class="popup">
+    <div id="mainUI">
+      <h2 style="font-family: var(--font-script);">Will you be my Valentine? 🥺</h2>
+      <img src="sexy.jpg" class="question-img">
+      <div>
+        <button onclick="handleYes()">💖 YES</button>
+        <button onclick="handleNo()" style="background:#ff99ac">💔 No</button>
+      </div>
+    </div>
+
+    <div id="noOverlap">
+      <video id="sadCatVideo" style="width: 220px; border-radius: 15px;" loop muted playsinline><source src="cry1.mp4"></video>
+      <p style="font-family: sans-serif; font-weight: bold; margin: 15px 0;">Noooo! You made the kitty cry! 😭</p>
+      <button onclick="resetNo()" style="font-size: 16px;">✨ I'm sorry, let me fix it! ✨</button>
+    </div>
+  </div>
+</section>
+
+<section id="message">
+  <div class="popup">
+    <h2 style="font-family: var(--font-script);">For Your Eyes Only 💌</h2>
+    <div class="envelope-wrapper" id="envelope" onclick="this.classList.toggle('open'); document.getElementById('openSound').play();">
+      <div class="envelope-back"></div>
+      <div class="letter-card">
+        <h3 style="text-align:center; color: var(--primary); margin-top: 0; font-family: var(--font-script);">To my Leyley,</h3>
+        
+        <p>Hi my leyley, it's valentine's day nsaddd and I just wanted to say na you are the greatest girl na akong na ilhan Dili lang kaysa sa greatest kundi the best, finest and the strongest na girl nga akong nailhan and I want to spend my valentine's with the girl I want, and the girl I want to be with and the girl I want to grow up with. Even tho we don't know unsay naa sa future if it's bad or good I'm willing to face the future with you and face every problem we will ever had and basin unsa nalang hehe... .</p>
+        
+        <p>And I promise to not annoy you na pero hehe di man jud mapugngan I will still annoy you gihapon hehe and I know wlaa patay any romantic label yet but.... Eheem.. ehheeem... 😏 hehe Wala rmn sad ko gadali pero ehem ehemm... Lol pero for real bitaw hehe I know di paka ready sa mga in ana pero I'll wait for the right time na ma say ka nga ready naka hehe (and ill eventually court you and mag trabahu ta and maka make nata daghan money mag shopping ta sa shopee hehe and then start a family in the future that is rich with love and poor with hate ) barss.... Galing ko noohhh.</p>
+        
+        <p>And You're the reason I always wake up with a smile. I will always love the little things we do. Looking forward to making more happy and unforgettable memories nga di nato makalim hantud inig big Nato hehe . My letter might seem small to you manang, but they’re the best I can give for now. I still think about those times we shared, the laughs, the simple moments that meant so much.</p>
+        
+        <p>I want more of those with you more laughs, more memories, more time together. I still think about those times we shared sa ch taga human klasi hehe and where we eat ice cream and get to bond , the laughs when we play badminton and playing ml and Roblox hehe do you remember katu nag play ta katung ang usa dapat mag ingon ASA muagi and ang usa dapat mo trust Kay blind hehe I cherished those moment baby and I will never forget those until we grow old together , those simple moments that meant so much.</p>
+        
+        <p>And I want to take you seriously not just as someone I like, but as someone I truly value and see in my future.I know I can't give you flowers or grand gifts right now but I hope these small love letter can make you happy 😁😋</p>
+
+        <p style="text-align: right; margin-top: 20px; font-weight: bold;">- Love, Manong denszo 💖</p>
+      </div>
+    </div>
+    <p style="font-size: 14px; color: #888;">(Tap the envelope to read)</p>
+  </div>
+</section>
+
+<script>
+  let music = document.getElementById('bgMusic');
+  
+  function toggleMusic() {
+    if (music.paused) { music.play(); document.getElementById('musicToggle').innerText = '🔊'; }
+    else { music.pause(); document.getElementById('musicToggle').innerText = '🔇'; }
+  }
+
+  function goTo(id) {
+    document.querySelectorAll('section').forEach(s => s.style.display = 'none');
+    document.getElementById(id).style.display = 'flex';
+  }
+
+  function handleNo() {
+    const overlap = document.getElementById('noOverlap');
+    overlap.style.setProperty('display', 'flex', 'important');
+    document.getElementById('sadCatVideo').play();
+  }
+
+  function resetNo() {
+    document.getElementById('noOverlap').style.display = 'none';
+    document.getElementById('sadCatVideo').pause();
+  }
+
+  function handleYes() {
+    const img = document.getElementById('shockedCat');
+    img.style.display = 'block';
+    
+    setTimeout(() => {
+      img.style.display = 'none';
+      goTo('message');
+    }, 3000); 
+  }
+
+  function spawn() {
+    const icons = ["💖", "🎀", "🍭", "🌸", "✨"];
+    const p = document.createElement("div");
+    p.className = "bg-particle";
+    p.innerText = icons[Math.floor(Math.random() * icons.length)];
+    p.style.left = Math.random() * 100 + "vw";
+    p.style.fontSize = (Math.random() * 20 + 20) + "px";
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 8000);
+  }
+  setInterval(spawn, 400);
+</script>
+</body>
+</html>
